@@ -15,7 +15,7 @@ export const Bingo = (props:any)=> {
     const [armadas, setArmadas] = useState<Cartela[]>([]);
     const [batidas, setBatidas] = useState<Cartela[]>([]);
 
-    const [jogo, setJogo] = useState<Jogo>({id: 0,dataJogo:new Date(), cartelas: [], bolasChamadas:[],
+    const [jogo, setJogo] = useState<Jogo>({id: 0,dataJogo:new Date(Date.now()-10800000), cartelas: [], bolasChamadas:[],
       numeroBolasChamadas: 0,  primeiraBolaChamada: 0, ultimaBolaChamada: 0, numeroBolasChamadasAoArmar: 0,
       quantidadeImpares: 0, quantidadePares: 0, cartelasArmadas: [], cartelasBatidas: []});
 
