@@ -121,12 +121,11 @@ export const Bingo = (props:any)=> {
                 });
                 
                 setCartelasJogo(newCartelas);
+                setJogo(jogo_aux);
                 
                 atualizaArmadas();
                 bateu();
                 setNumeroAtual('');
-                
-                setJogo(jogo_aux);
             }
         }
     }
@@ -135,9 +134,9 @@ export const Bingo = (props:any)=> {
         let newList = [...armadas];
         let carts = [...cartelasJogo];
         carts.forEach(c => {
-            if(c.totalChamadas == 14){
+            if(c.totalChamadas === 14){
               if(armadas.length == 0){
-                let nAoArmar = numerosSorteados.length;
+                let nAoArmar = numerosSorteados.length+1;
                 let jogo_aux = jogo;
                 jogo_aux.numeroBolasChamadasAoArmar = nAoArmar;
                 setJogo(jogo_aux);
@@ -149,7 +148,7 @@ export const Bingo = (props:any)=> {
         });
         setArmadas(newList);
         let newArmadas:String[] = [];
-        armadas.forEach(c => {
+        newList.forEach(c => {
           newArmadas.push(c.codigo);
         });
         let jogo_aux = jogo;
@@ -175,12 +174,21 @@ export const Bingo = (props:any)=> {
                 });
                 jogo_aux.cartelasArmadas = lista;
 
+                
+
                 setJogo(jogo_aux);
+              }
+            }
+            if(c.totalChamadas === 14){
+                
+              if(!lisArmadas.includes(c)){
+                lisArmadas.push(c);
               }
             }
         });
 
         setBatidas(newList);
+        setArmadas(lisArmadas);
 
         if(newList.length > 0){
           playSound();
@@ -191,16 +199,23 @@ export const Bingo = (props:any)=> {
           });     
           let jogo_aux = jogo;
           jogo_aux.cartelasBatidas = newBatidas;
+
+          let lista:String[] = [];
+          lisArmadas.forEach(c => {
+              lista.push(c.codigo);
+          });
+          jogo_aux.cartelasArmadas = lista;
             
           setJogo(jogo_aux);
-          console.log(jogo);
-                             
-          api.post("jogo", jogo).then(response => this.setState({ articleId: response.data.id }))
+          console.log(jogo_aux);
+                 
+          
+          api.post("jogo", jogo_aux).then(response => this.setState({ articleId: response.data.id }))
           .catch(error => {
-              this.setState({ errorMessage: error.message });
-              console.error('There was an error!', error);
+             this.setState({ errorMessage: error.message });
+             console.error('There was an error!', error);
           });
-        }
+       }
 
     }
 
@@ -227,7 +242,7 @@ export const Bingo = (props:any)=> {
     function renderInfos(){
         return(
             <View style = {styles.infoArea}>
-                <Text style={styles.label}>Cartelas Armadas:</Text>
+                <Text style={styles.label}>Cartelas Armadas: {armadas.length}</Text>
                   <View style={styles.areaText}>
                       {
                         armadas.map((item,index) => {
@@ -238,7 +253,7 @@ export const Bingo = (props:any)=> {
                       }
                     
                   </View>
-                <Text style={styles.label}>Cartelas Batidas:</Text>
+                <Text style={styles.label}>Cartelas Batidas: {batidas.length}</Text>
                   <View style={styles.areaText}>
                     {batidas.map((item,index) => {
                       return(
@@ -263,8 +278,6 @@ export const Bingo = (props:any)=> {
             <Text style={styles.label}>Bolas chamadas: {numerosSorteados.length}</Text>
             <Text style={styles.label}>Última bola chamada: {ultimaBola}</Text>
             {renderInfos()}
-            
-
         </View>
         
     );

@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
         marginLeft: 15,
         width: 100,
         height: 60,
+        borderRadius: 5,
         backgroundColor: '#fff',
         fontSize: 15,
         textAlign: 'center'
@@ -32,6 +33,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#23ee54',
+        borderRadius: 5,
         marginTop: 10,
         marginLeft: 15,
         width: 100,
